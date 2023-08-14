@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/models/task.dart';
 
 class Constants {
   // * Colors
@@ -25,6 +26,13 @@ class Constants {
   static const emailPlaceholder = 'example@test.com';
   static const passwordPlaceholder = 'Enter your password';
 
+  // * Error messages
+  static const errorMessage = "Ups! Something went wrong.";
+  static const blankName = "Please fill the name field";
+  static const blankLastName = "Please fill the last name field";
+  static const blankEmail = "Please fill the email field";
+  static const blankPassword = "Please fill the password field";
+
   // * Decorations
   static const formTextFieldDecoration = InputDecoration(
     hintText: 'Enter a value',
@@ -42,4 +50,11 @@ class Constants {
       borderRadius: BorderRadius.all(Radius.circular(32.0)),
     ),
   );
+
+  // * Dummy task
+  static List<Map<String, dynamic>> dummyTasks = [
+    {"isChecked": false, "text": "Buy milk"},
+    {"isChecked": false, "text": "Go to the gym"},
+    {"isChecked": false, "text": "Clean the room"},
+  ];
 }
