@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/models/task.dart';
 
 class Constants {
   // * Colors
@@ -25,6 +24,7 @@ class Constants {
   static const lastnamePlaceholder = 'Enter your last name';
   static const emailPlaceholder = 'example@test.com';
   static const passwordPlaceholder = 'Enter your password';
+  static const newTaskPlaceholder = 'Do the dishes';
 
   // * Error messages
   static const errorMessage = "Ups! Something went wrong.";
@@ -49,6 +49,13 @@ class Constants {
       borderSide: BorderSide(color: dkItemBackgroundColor, width: 2.0),
       borderRadius: BorderRadius.all(Radius.circular(32.0)),
     ),
+  );
+  static const newTaskFieldDecoration = InputDecoration(
+    hintText: 'Enter a value',
+    hintStyle: TextStyle(color: dkCheckedTextColor),
+    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+    enabledBorder: InputBorder.none,
+    focusedBorder: InputBorder.none,
   );
 
   // * Dummy task

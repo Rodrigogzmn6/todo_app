@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/components/error_dialog.dart';
 import 'package:todo_app/widgets/main_frame.dart';
+import 'package:todo_app/widgets/new_task.dart';
 
 class HomeRoute extends StatefulWidget {
   const HomeRoute({Key? key}) : super(key: key);
@@ -46,7 +47,10 @@ class _HomeRouteState extends State<HomeRoute> {
   Widget build(BuildContext context) {
     return MainFrame(
       logoutIcon: true,
-      childWidget: Center(child: Text("Hola ${loggedInUser.email}")),
+      childWidget: const Padding(
+        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        child: NewTask(),
+      ),
     );
   }
 }

@@ -12,21 +12,23 @@ class WelcomeRoute extends StatelessWidget {
     navigateToRoute(route) => Navigator.pushNamed(context, '$route');
 
     return MainFrame(
-      childWidget: FormLayout(
-        formFields: [
-          RoundedButton(
-            title: 'Login',
-            handleOnPressed: () => navigateToRoute('/login'),
-          ),
-          const SizedBox(
-            height: 24.0,
-          ),
-          RoundedButton(
-            backgroundColor: Constants.dkItemBackgroundColor,
-            title: 'Register',
-            handleOnPressed: () => navigateToRoute('/register'),
-          ),
-        ],
+      childWidget: Center(
+        child: FormLayout(
+          formFields: [
+            RoundedButton(
+              title: 'Login',
+              handleOnPressed: () => navigateToRoute('/login'),
+            ),
+            const SizedBox(
+              height: 24.0,
+            ),
+            RoundedButton(
+              backgroundColor: Constants.dkItemBackgroundColor,
+              title: 'Register',
+              handleOnPressed: () => navigateToRoute('/register'),
+            ),
+          ],
+        ),
       ),
     );
   }

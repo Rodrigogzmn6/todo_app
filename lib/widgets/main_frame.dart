@@ -64,10 +64,7 @@ class MainFrame extends StatelessWidget {
         ],
       ),
       backgroundColor: Constants.dkBackgroundColor,
-      body: Center(
-        child: childWidget,
-      ),
-      //resizeToAvoidBottomInset: false,
+      body: childWidget,
     );
   }
 }
