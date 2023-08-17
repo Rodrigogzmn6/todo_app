@@ -19,8 +19,13 @@ class Constants {
   static const lgCheckedTextColor = Color(0xFFC4C3C9);
 
   // * STRINGS
+  // * Themes
+  static const darkTheme = 'dark';
+  static const lightTheme = 'light';
+
   // * Collection Name
   static const collection = 'users';
+
   // * Forms
   static const namePlaceholder = 'Enter your name';
   static const lastnamePlaceholder = 'Enter your last name';
@@ -44,14 +49,6 @@ class Constants {
     hintStyle: TextStyle(color: dkCheckedTextColor),
     contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(32.0)),
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: dkItemBackgroundColor, width: 1.0),
-      borderRadius: BorderRadius.all(Radius.circular(32.0)),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: dkItemBackgroundColor, width: 2.0),
       borderRadius: BorderRadius.all(Radius.circular(32.0)),
     ),
   );

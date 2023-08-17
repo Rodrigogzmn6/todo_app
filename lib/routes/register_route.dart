@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/components/custom_form_field.dart';
 import 'package:todo_app/components/error_dialog.dart';
 import 'package:todo_app/components/form_layout.dart';
 import 'package:todo_app/constants.dart';
@@ -7,6 +9,8 @@ import 'package:todo_app/components/rounded_button.dart';
 import 'package:todo_app/widgets/main_frame.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../providers/theme_provider.dart';
 
 class RegisterRoute extends StatefulWidget {
   const RegisterRoute({Key? key}) : super(key: key);
@@ -49,6 +53,7 @@ class _RegisterRouteState extends State<RegisterRoute> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return MainFrame(
       leadingIcon: true,
       childWidget: Center(
@@ -56,65 +61,48 @@ class _RegisterRouteState extends State<RegisterRoute> {
           inAsyncCall: showSpinner,
           child: FormLayout(
             formFields: [
-              TextField(
-                keyboardType: TextInputType.name,
-                textAlign: TextAlign.center,
-                onChanged: (value) {
+              CustomFormField(
+                placeholder: Constants.namePlaceholder,
+                handleOnChange: (value) {
                   user['name'] = value;
                 },
-                style: const TextStyle(
-                    color: Constants.dkTextColor, fontSize: 20.0),
-                decoration: Constants.formTextFieldDecoration
-                    .copyWith(hintText: Constants.namePlaceholder),
               ),
               const SizedBox(
                 height: 24.0,
               ),
-              TextField(
-                keyboardType: TextInputType.name,
-                textAlign: TextAlign.center,
-                onChanged: (value) {
+              CustomFormField(
+                placeholder: Constants.lastnamePlaceholder,
+                handleOnChange: (value) {
                   user['lastname'] = value;
                 },
-                style: const TextStyle(
-                    color: Constants.dkTextColor, fontSize: 20.0),
-                decoration: Constants.formTextFieldDecoration
-                    .copyWith(hintText: Constants.lastnamePlaceholder),
               ),
               const SizedBox(
                 height: 24.0,
               ),
-              TextField(
+              CustomFormField(
                 keyboardType: TextInputType.emailAddress,
-                textAlign: TextAlign.center,
-                onChanged: (value) {
+                placeholder: Constants.emailPlaceholder,
+                handleOnChange: (value) {
                   user['email'] = value;
                 },
-                style: const TextStyle(
-                    color: Constants.dkTextColor, fontSize: 20.0),
-                decoration: Constants.formTextFieldDecoration
-                    .copyWith(hintText: Constants.emailPlaceholder),
               ),
               const SizedBox(
                 height: 24.0,
               ),
-              TextField(
-                keyboardType: TextInputType.visiblePassword,
-                textAlign: TextAlign.center,
+              CustomFormField(
                 obscureText: true,
-                onChanged: (value) {
+                placeholder: Constants.passwordPlaceholder,
+                handleOnChange: (value) {
                   user['password'] = value;
                 },
-                style: const TextStyle(
-                    color: Constants.dkTextColor, fontSize: 20.0),
-                decoration: Constants.formTextFieldDecoration
-                    .copyWith(hintText: Constants.passwordPlaceholder),
               ),
               const SizedBox(
                 height: 32.0,
               ),
               RoundedButton(
-                backgroundColor: Constants.dkItemBackgroundColor,
+                backgroundColor: themeProvider.backgroundColor,
+                textColor: themeProvider.textColor,
+                borderColor: themeProvider.itemBackgroundColor,
                 title: 'Register',
                 handleOnPressed: () async {
                   setState(() {

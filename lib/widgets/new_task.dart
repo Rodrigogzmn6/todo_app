@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/constants.dart';
+
+import '../providers/theme_provider.dart';
 
 class NewTask extends StatefulWidget {
   const NewTask({Key? key}) : super(key: key);
@@ -52,11 +55,13 @@ class _NewTaskState extends State<NewTask> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return CheckboxListTile(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      tileColor: Constants.dkItemBackgroundColor,
+      tileColor: themeProvider.itemBackgroundColor,
       value: isChecked,
       onChanged: (value) => setState(() {
         isChecked = value!;
@@ -65,15 +70,15 @@ class _NewTaskState extends State<NewTask> {
         controller: _controller,
         focusNode: _focusNode,
         onChanged: (value) => task = value,
-        style: const TextStyle(color: Constants.dkTextColor, fontSize: 20.0),
+        style: TextStyle(color: themeProvider.textColor, fontSize: 20.0),
         decoration: Constants.newTaskFieldDecoration
             .copyWith(hintText: Constants.newTaskPlaceholder),
       ),
       secondary: GestureDetector(
         onTap: handleSaveTask,
-        child: const Icon(
+        child: Icon(
           Icons.save_alt_rounded,
-          color: Constants.dkTextColor,
+          color: themeProvider.textColor,
         ),
       ),
       controlAffinity: ListTileControlAffinity.leading,

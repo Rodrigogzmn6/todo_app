@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:todo_app/providers/theme_provider.dart';
 import 'package:todo_app/providers/user_provider.dart';
 import 'package:todo_app/routes/home_route.dart';
 import 'firebase_options.dart';
@@ -32,22 +33,28 @@ class _ToDoAppState extends State<ToDoApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ToDo App',
-      theme: ThemeData(
-        textTheme: GoogleFonts.robotoTextTheme(
-          Theme.of(context).textTheme,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+      ],
+      child: MaterialApp(
+        title: 'ToDo App',
+        theme: ThemeData(
+          textTheme: GoogleFonts.robotoTextTheme(
+            Theme.of(context).textTheme,
+          ),
+          useMaterial3: true,
         ),
-        useMaterial3: true,
+        initialRoute: '/',
+        routes: {
+          '/': (context) => _auth.currentUser != null
+              ? const HomeRoute()
+              : const WelcomeRoute(),
+          '/login': (context) => const LoginRoute(),
+          '/register': (context) => const RegisterRoute(),
+        },
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => _auth.currentUser != null
-            ? const HomeRoute()
-            : const WelcomeRoute(),
-        '/login': (context) => const LoginRoute(),
-        '/register': (context) => const RegisterRoute(),
-      },
     );
   }
 }

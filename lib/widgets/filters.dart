@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/components/task_tile.dart';
 import 'package:todo_app/constants.dart';
+import 'package:todo_app/providers/theme_provider.dart';
 
 class Filters extends StatefulWidget {
   const Filters({super.key});
@@ -12,19 +14,20 @@ class Filters extends StatefulWidget {
 class _FiltersState extends State<Filters> {
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return ListTile(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      tileColor: Constants.dkItemBackgroundColor,
+      tileColor: themeProvider.itemBackgroundColor,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           GestureDetector(
-            child: const Text(
+            child: Text(
               "All",
               style: TextStyle(
-                color: Constants.dkTextColor,
+                color: themeProvider.textColor,
               ),
             ),
           ),
@@ -32,10 +35,10 @@ class _FiltersState extends State<Filters> {
             width: 16.0,
           ),
           GestureDetector(
-            child: const Text(
+            child: Text(
               "Active",
               style: TextStyle(
-                color: Constants.dkTextColor,
+                color: themeProvider.textColor,
               ),
             ),
           ),
@@ -43,10 +46,10 @@ class _FiltersState extends State<Filters> {
             width: 16.0,
           ),
           GestureDetector(
-            child: const Text(
+            child: Text(
               "Completed",
               style: TextStyle(
-                color: Constants.dkTextColor,
+                color: themeProvider.textColor,
               ),
             ),
           ),

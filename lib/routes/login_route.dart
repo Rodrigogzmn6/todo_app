@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/components/error_dialog.dart';
 import 'package:todo_app/components/form_layout.dart';
 import 'package:todo_app/components/rounded_button.dart';
 import 'package:todo_app/constants.dart';
+import 'package:todo_app/providers/theme_provider.dart';
 import 'package:todo_app/widgets/main_frame.dart';
+import 'package:todo_app/components/custom_form_field.dart';
 
 class LoginRoute extends StatefulWidget {
   const LoginRoute({Key? key}) : super(key: key);
@@ -38,6 +41,8 @@ class _LoginRouteState extends State<LoginRoute> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return MainFrame(
       leadingIcon: true,
       childWidget: Center(
@@ -45,37 +50,30 @@ class _LoginRouteState extends State<LoginRoute> {
           inAsyncCall: showSpinner,
           child: FormLayout(
             formFields: [
-              TextField(
+              CustomFormField(
                 keyboardType: TextInputType.emailAddress,
-                textAlign: TextAlign.center,
-                onChanged: (value) {
+                placeholder: Constants.emailPlaceholder,
+                handleOnChange: (value) {
                   user["email"] = value;
                 },
-                style: const TextStyle(
-                    color: Constants.dkTextColor, fontSize: 20.0),
-                decoration: Constants.formTextFieldDecoration
-                    .copyWith(hintText: Constants.emailPlaceholder),
               ),
               const SizedBox(
                 height: 24.0,
               ),
-              TextField(
-                keyboardType: TextInputType.visiblePassword,
+              CustomFormField(
                 obscureText: true,
-                textAlign: TextAlign.center,
-                onChanged: (value) {
+                placeholder: Constants.passwordPlaceholder,
+                handleOnChange: (value) {
                   user["password"] = value;
                 },
-                style: const TextStyle(
-                    color: Constants.dkTextColor, fontSize: 20.0),
-                decoration: Constants.formTextFieldDecoration
-                    .copyWith(hintText: Constants.passwordPlaceholder),
               ),
               const SizedBox(
                 height: 32.0,
               ),
               RoundedButton(
-                backgroundColor: Constants.dkItemBackgroundColor,
+                backgroundColor: themeProvider.backgroundColor,
+                textColor: themeProvider.textColor,
+                borderColor: themeProvider.itemBackgroundColor,
                 title: 'Log In',
                 handleOnPressed: () async {
                   try {
@@ -116,3 +114,45 @@ class _LoginRouteState extends State<LoginRoute> {
     );
   }
 }
+
+// class FormField extends StatelessWidget {
+//   const FormField({
+//     super.key,
+//     required this.user,
+//     required this.themeProvider,
+//   });
+
+//   final Map<String, dynamic> user;
+//   final ThemeProvider themeProvider;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return TextField(
+//       keyboardType: TextInputType.emailAddress,
+//       textAlign: TextAlign.center,
+//       onChanged: (value) {
+//         user["email"] = value;
+//       },
+//       style: TextStyle(
+//         color: themeProvider.textColor,
+//         fontSize: 20.0,
+//       ),
+//       decoration: Constants.formTextFieldDecoration.copyWith(
+//         hintText: Constants.emailPlaceholder,
+//         hintStyle: TextStyle(
+//           color: themeProvider.checkedTextColor,
+//         ),
+//         enabledBorder: OutlineInputBorder(
+//           borderSide: BorderSide(
+//               color: themeProvider.itemBackgroundColor, width: 1.0),
+//           borderRadius: const BorderRadius.all(Radius.circular(32.0)),
+//         ),
+//         focusedBorder: OutlineInputBorder(
+//           borderSide: BorderSide(
+//               color: themeProvider.itemBackgroundColor, width: 2.0),
+//           borderRadius: const BorderRadius.all(Radius.circular(32.0)),
+//         ),
+//       ),
+//     );
+//   }
+// }

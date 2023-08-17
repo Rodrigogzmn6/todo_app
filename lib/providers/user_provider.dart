@@ -4,12 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:todo_app/constants.dart';
 
 class UserProvider with ChangeNotifier {
-  var _auth = FirebaseAuth.instance;
-  var _firestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
 
   get user => _auth.currentUser;
 
-  void loginUser(email, password) async {
+  loginUser(email, password) async {
     try {
       await _auth.signInWithEmailAndPassword(
         email: email,
@@ -20,7 +20,7 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  void registerUser(name, lastname, email, password) async {
+  registerUser(name, lastname, email, password) async {
     try {
       await _auth.createUserWithEmailAndPassword(
         email: email,

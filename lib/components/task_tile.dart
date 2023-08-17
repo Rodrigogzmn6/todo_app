@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/constants.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/providers/theme_provider.dart';
 
 class TaskTile extends StatelessWidget {
   final bool isChecked;
@@ -9,23 +10,24 @@ class TaskTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return CheckboxListTile(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
-          side: BorderSide(color: Constants.dkBackgroundColor)),
-      tileColor: Constants.dkItemBackgroundColor,
+          side: BorderSide(color: themeProvider.backgroundColor)),
+      tileColor: themeProvider.itemBackgroundColor,
       value: isChecked,
       onChanged: (value) => print("hola"),
       title: Text(
         task,
-        style: const TextStyle(color: Constants.dkTextColor, fontSize: 20.0),
+        style: TextStyle(color: themeProvider.textColor, fontSize: 20.0),
       ),
       controlAffinity: ListTileControlAffinity.leading,
       secondary: GestureDetector(
         onTap: () => {print("Delete task")},
-        child: const Icon(
+        child: Icon(
           Icons.close_rounded,
-          color: Constants.dkCheckedTextColor,
+          color: themeProvider.checkedTextColor,
         ),
       ),
     );
