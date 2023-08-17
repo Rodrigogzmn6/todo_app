@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Constants {
-  // * Colors
+  // * COLORS
   // * Title and active
   static const activeTextColor = Color(0xFF4773D8);
   static const titleTextColor = Color(0xFFFFFFFF);
@@ -18,7 +18,9 @@ class Constants {
   static const lgTextColor = Color(0xFF4D4E5C);
   static const lgCheckedTextColor = Color(0xFFC4C3C9);
 
-  // * Strings
+  // * STRINGS
+  // * Collection Name
+  static const collection = 'users';
   // * Forms
   static const namePlaceholder = 'Enter your name';
   static const lastnamePlaceholder = 'Enter your last name';
@@ -33,7 +35,10 @@ class Constants {
   static const blankEmail = "Please fill the email field";
   static const blankPassword = "Please fill the password field";
 
-  // * Decorations
+  // * Repository link
+  static const repoLink = 'https://github.com/Rodrigogzmn6';
+
+  // * DECORATIONS
   static const formTextFieldDecoration = InputDecoration(
     hintText: 'Enter a value',
     hintStyle: TextStyle(color: dkCheckedTextColor),
@@ -58,7 +63,7 @@ class Constants {
     focusedBorder: InputBorder.none,
   );
 
-  // * Dummy task
+  // * DUMMY TASK
   static List<Map<String, dynamic>> dummyTasks = [
     {"isChecked": false, "text": "Buy milk"},
     {"isChecked": false, "text": "Go to the gym"},

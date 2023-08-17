@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:todo_app/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainFrame extends StatelessWidget {
   final Widget childWidget;
@@ -12,6 +14,15 @@ class MainFrame extends StatelessWidget {
       this.logoutIcon = false});
 
   final _auth = FirebaseAuth.instance;
+
+  void handleVisitURL() async {
+    Uri link = Uri.parse(Constants.repoLink);
+    if (await canLaunchUrl(link)) {
+      await launchUrl(link);
+    } else {
+      throw "Couldn't open link";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +76,34 @@ class MainFrame extends StatelessWidget {
       ),
       backgroundColor: Constants.dkBackgroundColor,
       body: childWidget,
+      bottomNavigationBar: Container(
+        color: Constants.dkItemBackgroundColor,
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Created by ",
+                style: GoogleFonts.poppins(
+                  textStyle: const TextStyle(color: Constants.dkTextColor),
+                ),
+              ),
+              GestureDetector(
+                onTap: handleVisitURL,
+                child: Text(
+                  "Rodrigogzmn6",
+                  style: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Constants.dkTextColor),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

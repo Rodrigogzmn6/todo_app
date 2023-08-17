@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/components/error_dialog.dart';
+import 'package:todo_app/widgets/filters.dart';
 import 'package:todo_app/widgets/main_frame.dart';
 import 'package:todo_app/widgets/new_task.dart';
+import 'package:todo_app/widgets/tasks_list.dart';
 
 class HomeRoute extends StatefulWidget {
   const HomeRoute({Key? key}) : super(key: key);
@@ -49,7 +51,21 @@ class _HomeRouteState extends State<HomeRoute> {
       logoutIcon: true,
       childWidget: const Padding(
         padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-        child: NewTask(),
+        child: Column(
+          children: [
+            NewTask(),
+            SizedBox(
+              height: 20.0,
+            ),
+            Expanded(
+              child: TasksList(),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            Filters(),
+          ],
+        ),
       ),
     );
   }

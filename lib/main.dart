@@ -1,12 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:todo_app/providers/user_provider.dart';
 import 'package:todo_app/routes/home_route.dart';
 import 'firebase_options.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'routes/welcome_route.dart';
 import 'routes/login_route.dart';
 import 'routes/register_route.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

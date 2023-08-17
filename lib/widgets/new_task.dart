@@ -53,6 +53,9 @@ class _NewTaskState extends State<NewTask> {
   @override
   Widget build(BuildContext context) {
     return CheckboxListTile(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       tileColor: Constants.dkItemBackgroundColor,
       value: isChecked,
       onChanged: (value) => setState(() {
