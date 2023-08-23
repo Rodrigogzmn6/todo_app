@@ -1,72 +1,17 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_app/components/error_dialog.dart';
-import 'package:todo_app/widgets/filters.dart';
-import 'package:todo_app/widgets/main_frame.dart';
-import 'package:todo_app/widgets/new_task.dart';
-import 'package:todo_app/widgets/tasks_list.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/providers/user_provider.dart';
+import 'package:todo_app/widgets/home_widget.dart';
+import 'package:todo_app/widgets/welcome_widget.dart';
 
-class HomeRoute extends StatefulWidget {
+class HomeRoute extends StatelessWidget {
   const HomeRoute({Key? key}) : super(key: key);
 
   @override
-  State<HomeRoute> createState() => _HomeRouteState();
-}
-
-class _HomeRouteState extends State<HomeRoute> {
-  final _auth = FirebaseAuth.instance;
-  late User loggedInUser;
-
-  void getCurrentUser() async {
-    try {
-      if (_auth.currentUser == null) {
-        Navigator.pushNamed(context, "/");
-      }
-      loggedInUser = _auth.currentUser!;
-      print(loggedInUser);
-    } catch (e) {
-      String errorMessage = "";
-      if (e is FirebaseAuthException) {
-        errorMessage = e.message.toString();
-      }
-      showDialog(
-        context: context,
-        builder: (_) => ErrorDialog(
-          description: errorMessage,
-        ),
-        barrierDismissible: true,
-      );
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getCurrentUser();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return MainFrame(
-      logoutIcon: true,
-      childWidget: const Padding(
-        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-        child: Column(
-          children: [
-            NewTask(),
-            SizedBox(
-              height: 20.0,
-            ),
-            Expanded(
-              child: TasksList(),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            Filters(),
-          ],
-        ),
-      ),
-    );
+    final userProvider = Provider.of<UserProvider>(context);
+    return userProvider.currentUser != null
+        ? const HomeWidget()
+        : const WelcomeWidget();
   }
 }

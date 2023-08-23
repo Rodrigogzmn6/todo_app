@@ -7,6 +7,7 @@ import 'package:todo_app/components/form_layout.dart';
 import 'package:todo_app/components/rounded_button.dart';
 import 'package:todo_app/constants.dart';
 import 'package:todo_app/providers/theme_provider.dart';
+import 'package:todo_app/providers/user_provider.dart';
 import 'package:todo_app/widgets/main_frame.dart';
 import 'package:todo_app/components/custom_form_field.dart';
 
@@ -18,7 +19,6 @@ class LoginRoute extends StatefulWidget {
 }
 
 class _LoginRouteState extends State<LoginRoute> {
-  final _auth = FirebaseAuth.instance;
   Map<String, dynamic> user = {
     "email": "",
     "password": "",
@@ -42,6 +42,41 @@ class _LoginRouteState extends State<LoginRoute> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
+
+    void handleOnLogin() async {
+      setState(() {
+        showSpinner = true;
+      });
+      try {
+        if (checkFields()) {
+          await userProvider.loginUser(
+            user["email"],
+            user["password"],
+          );
+          // ignore: use_build_context_synchronously
+          if (!context.mounted) return;
+          Navigator.pushNamed(context, "/");
+        } else {
+          throw (errorMessage);
+        }
+      } catch (e) {
+        if (e is FirebaseAuthException) {
+          errorMessage = e.message.toString();
+        }
+        showDialog(
+          context: context,
+          builder: (_) => ErrorDialog(
+            description: errorMessage,
+          ),
+          barrierDismissible: true,
+        );
+      } finally {
+        setState(() {
+          showSpinner = false;
+        });
+      }
+    }
 
     return MainFrame(
       leadingIcon: true,
@@ -75,37 +110,7 @@ class _LoginRouteState extends State<LoginRoute> {
                 textColor: themeProvider.textColor,
                 borderColor: themeProvider.itemBackgroundColor,
                 title: 'Log In',
-                handleOnPressed: () async {
-                  try {
-                    setState(() {
-                      showSpinner = true;
-                    });
-                    if (checkFields()) {
-                      await _auth.signInWithEmailAndPassword(
-                          email: user["email"], password: user["password"]);
-                      setState(() {
-                        showSpinner = false;
-                      });
-                      // ignore: use_build_context_synchronously
-                      if (!context.mounted) return;
-                      Navigator.pushNamed(context, "/");
-                    } else {
-                      throw Exception(errorMessage);
-                    }
-                  } catch (e) {
-                    print(e);
-                    if (e is FirebaseAuthException) {
-                      errorMessage = e.message.toString();
-                    }
-                    showDialog(
-                      context: context,
-                      builder: (_) => ErrorDialog(
-                        description: errorMessage,
-                      ),
-                      barrierDismissible: true,
-                    );
-                  }
-                },
+                handleOnPressed: handleOnLogin,
               )
             ],
           ),
@@ -114,45 +119,3 @@ class _LoginRouteState extends State<LoginRoute> {
     );
   }
 }
-
-// class FormField extends StatelessWidget {
-//   const FormField({
-//     super.key,
-//     required this.user,
-//     required this.themeProvider,
-//   });
-
-//   final Map<String, dynamic> user;
-//   final ThemeProvider themeProvider;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return TextField(
-//       keyboardType: TextInputType.emailAddress,
-//       textAlign: TextAlign.center,
-//       onChanged: (value) {
-//         user["email"] = value;
-//       },
-//       style: TextStyle(
-//         color: themeProvider.textColor,
-//         fontSize: 20.0,
-//       ),
-//       decoration: Constants.formTextFieldDecoration.copyWith(
-//         hintText: Constants.emailPlaceholder,
-//         hintStyle: TextStyle(
-//           color: themeProvider.checkedTextColor,
-//         ),
-//         enabledBorder: OutlineInputBorder(
-//           borderSide: BorderSide(
-//               color: themeProvider.itemBackgroundColor, width: 1.0),
-//           borderRadius: const BorderRadius.all(Radius.circular(32.0)),
-//         ),
-//         focusedBorder: OutlineInputBorder(
-//           borderSide: BorderSide(
-//               color: themeProvider.itemBackgroundColor, width: 2.0),
-//           borderRadius: const BorderRadius.all(Radius.circular(32.0)),
-//         ),
-//       ),
-//     );
-//   }
-// }

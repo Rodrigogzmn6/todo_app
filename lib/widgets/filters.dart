@@ -3,18 +3,15 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/components/task_tile.dart';
 import 'package:todo_app/constants.dart';
 import 'package:todo_app/providers/theme_provider.dart';
+import 'package:todo_app/providers/user_provider.dart';
 
-class Filters extends StatefulWidget {
+class Filters extends StatelessWidget {
   const Filters({super.key});
 
   @override
-  State<Filters> createState() => _FiltersState();
-}
-
-class _FiltersState extends State<Filters> {
-  @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
     return ListTile(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -27,9 +24,12 @@ class _FiltersState extends State<Filters> {
             child: Text(
               "All",
               style: TextStyle(
-                color: themeProvider.textColor,
+                color: userProvider.filter == "All"
+                    ? Constants.activeTextColor
+                    : themeProvider.textColor,
               ),
             ),
+            onTap: () => userProvider.filter = ("All"),
           ),
           const SizedBox(
             width: 16.0,
@@ -38,9 +38,12 @@ class _FiltersState extends State<Filters> {
             child: Text(
               "Active",
               style: TextStyle(
-                color: themeProvider.textColor,
+                color: userProvider.filter == "Active"
+                    ? Constants.activeTextColor
+                    : themeProvider.textColor,
               ),
             ),
+            onTap: () => userProvider.filter = ("Active"),
           ),
           const SizedBox(
             width: 16.0,
@@ -49,9 +52,12 @@ class _FiltersState extends State<Filters> {
             child: Text(
               "Completed",
               style: TextStyle(
-                color: themeProvider.textColor,
+                color: userProvider.filter == "Completed"
+                    ? Constants.activeTextColor
+                    : themeProvider.textColor,
               ),
             ),
+            onTap: () => userProvider.filter = "Completed",
           ),
         ],
       ),

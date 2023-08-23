@@ -1,61 +1,29 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/constants.dart';
 
 import '../providers/theme_provider.dart';
+import '../providers/user_provider.dart';
 
 class NewTask extends StatefulWidget {
   const NewTask({Key? key}) : super(key: key);
 
   @override
-  _NewTaskState createState() => _NewTaskState();
+  NewTaskState createState() => NewTaskState();
 }
 
-class _NewTaskState extends State<NewTask> {
-  final _auth = FirebaseAuth.instance;
-  final _firestore = FirebaseFirestore.instance;
+class NewTaskState extends State<NewTask> {
   bool isChecked = false;
   String task = "";
-  TextEditingController _controller = TextEditingController();
-  FocusNode _focusNode = FocusNode();
-
-  void handleSaveTask() async {
-    try {
-      var snapshot = await _firestore
-          .collection("users")
-          .where("email", isEqualTo: _auth.currentUser?.email)
-          .get();
-      if (snapshot.docs.isNotEmpty) {
-        print(snapshot.docs[0].data());
-        var docId = snapshot.docs[0].id;
-        List newTasks = snapshot.docs[0].data()["tasks"];
-        newTasks.add({"text": task, "isChecked": isChecked});
-
-        print(docId + newTasks.toString());
-
-        await _firestore
-            .collection("users")
-            .doc(docId)
-            .update({"tasks": newTasks});
-
-        setState(() {
-          _controller.clear();
-          _focusNode.unfocus();
-          isChecked = false;
-        });
-      } else {
-        print("no docs");
-      }
-    } on Exception catch (e) {
-      print(e);
-    }
-  }
+  final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
 
     return CheckboxListTile(
       shape: RoundedRectangleBorder(
@@ -75,7 +43,18 @@ class _NewTaskState extends State<NewTask> {
             .copyWith(hintText: Constants.newTaskPlaceholder),
       ),
       secondary: GestureDetector(
-        onTap: handleSaveTask,
+        onTap: () async {
+          try {
+            await userProvider.addTask(task, isChecked);
+            setState(() {
+              _controller.clear();
+              _focusNode.unfocus();
+              isChecked = false;
+            });
+          } on Exception catch (e) {
+            print(e);
+          }
+        },
         child: Icon(
           Icons.save_alt_rounded,
           color: themeProvider.textColor,

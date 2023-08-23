@@ -62,8 +62,8 @@ class Constants {
 
   // * DUMMY TASK
   static List<Map<String, dynamic>> dummyTasks = [
-    {"isChecked": false, "text": "Buy milk"},
-    {"isChecked": false, "text": "Go to the gym"},
-    {"isChecked": false, "text": "Clean the room"},
+    {"isChecked": false, "text": "Buy milk", "id": 1},
+    {"isChecked": false, "text": "Go to the gym", "id": 2},
+    {"isChecked": false, "text": "Clean the room", "id": 3},
   ];
 }

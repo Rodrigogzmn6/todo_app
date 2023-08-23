@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:todo_app/providers/theme_provider.dart';
@@ -6,7 +5,6 @@ import 'package:todo_app/providers/user_provider.dart';
 import 'package:todo_app/routes/home_route.dart';
 import 'firebase_options.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'routes/welcome_route.dart';
 import 'routes/login_route.dart';
 import 'routes/register_route.dart';
 import 'package:provider/provider.dart';
@@ -29,8 +27,6 @@ class ToDoApp extends StatefulWidget {
 }
 
 class _ToDoAppState extends State<ToDoApp> {
-  final _auth = FirebaseAuth.instance;
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -48,9 +44,7 @@ class _ToDoAppState extends State<ToDoApp> {
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) => _auth.currentUser != null
-              ? const HomeRoute()
-              : const WelcomeRoute(),
+          '/': (context) => const HomeRoute(),
           '/login': (context) => const LoginRoute(),
           '/register': (context) => const RegisterRoute(),
         },

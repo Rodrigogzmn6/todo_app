@@ -6,9 +6,9 @@ import 'package:todo_app/components/error_dialog.dart';
 import 'package:todo_app/components/form_layout.dart';
 import 'package:todo_app/constants.dart';
 import 'package:todo_app/components/rounded_button.dart';
+import 'package:todo_app/providers/user_provider.dart';
 import 'package:todo_app/widgets/main_frame.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../providers/theme_provider.dart';
 
@@ -20,8 +20,6 @@ class RegisterRoute extends StatefulWidget {
 }
 
 class _RegisterRouteState extends State<RegisterRoute> {
-  final _auth = FirebaseAuth.instance;
-  final _firestore = FirebaseFirestore.instance;
   String errorMessage = "";
   bool showSpinner = false;
 
@@ -54,6 +52,44 @@ class _RegisterRouteState extends State<RegisterRoute> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
+
+    void handleOnRegister() async {
+      setState(() {
+        showSpinner = true;
+      });
+      try {
+        if (checkFields()) {
+          await userProvider.registerUser(
+            user["name"],
+            user["lastname"],
+            user["email"],
+            user["password"],
+          );
+          // ignore: use_build_context_synchronously
+          if (!context.mounted) return;
+          Navigator.pushNamed(context, "/");
+        } else {
+          throw (errorMessage);
+        }
+      } catch (e) {
+        if (e is FirebaseAuthException) {
+          errorMessage = e.message.toString();
+        }
+        showDialog(
+          context: context,
+          builder: (_) => ErrorDialog(
+            description: errorMessage,
+          ),
+          barrierDismissible: true,
+        );
+      } finally {
+        setState(() {
+          showSpinner = false;
+        });
+      }
+    }
+
     return MainFrame(
       leadingIcon: true,
       childWidget: Center(
@@ -104,43 +140,7 @@ class _RegisterRouteState extends State<RegisterRoute> {
                 textColor: themeProvider.textColor,
                 borderColor: themeProvider.itemBackgroundColor,
                 title: 'Register',
-                handleOnPressed: () async {
-                  setState(() {
-                    showSpinner = true;
-                  });
-                  try {
-                    if (checkFields()) {
-                      await _auth.createUserWithEmailAndPassword(
-                          email: user["email"], password: user["password"]);
-                      _firestore.collection("users").add({
-                        "name": user["name"].trim(),
-                        "lastname": user["lastname"].trim(),
-                        "email": user["email"].trim(),
-                        "tasks": Constants.dummyTasks,
-                      });
-                      setState(() {
-                        showSpinner = false;
-                      });
-                      // ignore: use_build_context_synchronously
-                      if (!context.mounted) return;
-                      Navigator.pushNamed(context, "/");
-                    } else {
-                      throw Exception(errorMessage);
-                    }
-                  } catch (e) {
-                    print(e);
-                    if (e is FirebaseAuthException) {
-                      errorMessage = e.message.toString();
-                    }
-                    showDialog(
-                      context: context,
-                      builder: (_) => ErrorDialog(
-                        description: errorMessage,
-                      ),
-                      barrierDismissible: true,
-                    );
-                  }
-                },
+                handleOnPressed: handleOnRegister,
               ),
             ],
           ),
