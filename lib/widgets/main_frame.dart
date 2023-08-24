@@ -1,35 +1,34 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/components/error_dialog.dart';
 import 'package:todo_app/constants.dart';
+import 'package:todo_app/providers/user_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../providers/theme_provider.dart';
 
 class MainFrame extends StatelessWidget {
   final Widget childWidget;
   final bool leadingIcon, logoutIcon;
-  MainFrame(
+  const MainFrame(
       {super.key,
       this.leadingIcon = false,
       required this.childWidget,
       this.logoutIcon = false});
-
-  final _auth = FirebaseAuth.instance;
 
   void handleVisitURL() async {
     Uri link = Uri.parse(Constants.repoLink);
     if (await canLaunchUrl(link)) {
       await launchUrl(link);
     } else {
-      throw "Couldn't open link";
+      throw Constants.linkError;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -44,10 +43,10 @@ class MainFrame extends StatelessWidget {
                       color: Constants.titleTextColor,
                     ),
                     onTap: () async {
-                      await _auth.signOut();
+                      await userProvider.signOutUser();
                       // ignore: use_build_context_synchronously
                       if (!context.mounted) return;
-                      Navigator.pushNamed(context, "/");
+                      Navigator.pushNamed(context, Constants.homeRoute);
                     },
                   ),
                 )
@@ -81,8 +80,8 @@ class MainFrame extends StatelessWidget {
             ),
             image: DecorationImage(
               image: themeProvider.theme == Constants.darkTheme
-                  ? const AssetImage('assets/bg-mobile-dark.jpg')
-                  : const AssetImage('assets/bg-mobile-light.jpg'),
+                  ? const AssetImage(Constants.darkBackgroundImage)
+                  : const AssetImage(Constants.lightBackgroundImage),
               fit: BoxFit.fill,
             ),
           ),
@@ -109,7 +108,19 @@ class MainFrame extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: handleVisitURL,
+                onTap: () {
+                  try {
+                    handleVisitURL();
+                  } catch (e) {
+                    showDialog(
+                      context: context,
+                      builder: (_) => ErrorDialog(
+                        description: e.toString(),
+                      ),
+                      barrierDismissible: true,
+                    );
+                  }
+                },
                 child: Text(
                   "Rodrigogzmn6",
                   style: GoogleFonts.poppins(

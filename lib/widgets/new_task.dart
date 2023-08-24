@@ -1,9 +1,8 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/components/error_dialog.dart';
 import 'package:todo_app/constants.dart';
-
 import '../providers/theme_provider.dart';
 import '../providers/user_provider.dart';
 
@@ -38,9 +37,13 @@ class NewTaskState extends State<NewTask> {
         controller: _controller,
         focusNode: _focusNode,
         onChanged: (value) => task = value,
-        style: TextStyle(color: themeProvider.textColor, fontSize: 20.0),
-        decoration: Constants.newTaskFieldDecoration
-            .copyWith(hintText: Constants.newTaskPlaceholder),
+        style: TextStyle(
+          color: themeProvider.textColor,
+          fontSize: 20.0,
+        ),
+        decoration: Constants.newTaskFieldDecoration.copyWith(
+          hintText: Constants.newTaskPlaceholder,
+        ),
       ),
       secondary: GestureDetector(
         onTap: () async {
@@ -51,8 +54,16 @@ class NewTaskState extends State<NewTask> {
               _focusNode.unfocus();
               isChecked = false;
             });
-          } on Exception catch (e) {
-            print(e);
+          } catch (e) {
+            showDialog(
+              context: context,
+              builder: (_) => ErrorDialog(
+                description: e is FirebaseAuthException
+                    ? e.message.toString()
+                    : e.toString(),
+              ),
+              barrierDismissible: true,
+            );
           }
         },
         child: Icon(

@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/components/task_tile.dart';
+import 'package:todo_app/constants.dart';
 import 'package:todo_app/providers/theme_provider.dart';
-
 import '../providers/user_provider.dart';
 
 class TasksList extends StatelessWidget {
@@ -21,7 +19,7 @@ class TasksList extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return const Text("error");
+          return const Text(Constants.errorMessage);
         } else {
           return Card(
             elevation: 0,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:todo_app/constants.dart';
 import 'package:todo_app/providers/theme_provider.dart';
 import 'package:todo_app/providers/user_provider.dart';
 import 'package:todo_app/routes/home_route.dart';
@@ -42,11 +43,11 @@ class _ToDoAppState extends State<ToDoApp> {
           ),
           useMaterial3: true,
         ),
-        initialRoute: '/',
+        initialRoute: Constants.homeRoute,
         routes: {
-          '/': (context) => const HomeRoute(),
-          '/login': (context) => const LoginRoute(),
-          '/register': (context) => const RegisterRoute(),
+          Constants.homeRoute: (context) => const HomeRoute(),
+          Constants.loginRoute: (context) => const LoginRoute(),
+          Constants.registerRoute: (context) => const RegisterRoute(),
         },
       ),
     );

@@ -8,7 +8,7 @@ class RoundedButton extends StatelessWidget {
 
   const RoundedButton({
     super.key,
-    this.backgroundColor = Constants.dkBackgroundColor,
+    this.backgroundColor = Constants.activeTextColor,
     this.textColor = Constants.dkTextColor,
     this.borderColor = Constants.dkItemBackgroundColor,
     required this.title,

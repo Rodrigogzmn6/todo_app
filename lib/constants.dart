@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Constants {
-  // * COLORS
+  //! COLORS
   // * Title and active
   static const activeTextColor = Color(0xFF4773D8);
   static const titleTextColor = Color(0xFFFFFFFF);
@@ -18,13 +18,30 @@ class Constants {
   static const lgTextColor = Color(0xFF4D4E5C);
   static const lgCheckedTextColor = Color(0xFFC4C3C9);
 
-  // * STRINGS
-  // * Themes
-  static const darkTheme = 'dark';
-  static const lightTheme = 'light';
+  //! STRINGS
+  // * Assets
+  static const darkBackgroundImage = "assets/bg-mobile-dark.jpg";
+  static const lightBackgroundImage = "assets/bg-mobile-light.jpg";
+
+  // * Buttons
+  static const login = 'Log In';
+  static const register = 'Register';
 
   // * Collection Name
   static const collection = 'users';
+
+  // * Error messages
+  static const errorMessage = "Ups! Something went wrong.";
+  static const blankName = "Please fill the name field";
+  static const blankLastName = "Please fill the last name field";
+  static const blankEmail = "Please fill the email field";
+  static const blankPassword = "Please fill the password field";
+  static const linkError = "Couldn't open link";
+
+  // * Filteres
+  static const all = "All";
+  static const active = "Active";
+  static const completed = "Completed";
 
   // * Forms
   static const namePlaceholder = 'Enter your name';
@@ -33,15 +50,17 @@ class Constants {
   static const passwordPlaceholder = 'Enter your password';
   static const newTaskPlaceholder = 'Do the dishes';
 
-  // * Error messages
-  static const errorMessage = "Ups! Something went wrong.";
-  static const blankName = "Please fill the name field";
-  static const blankLastName = "Please fill the last name field";
-  static const blankEmail = "Please fill the email field";
-  static const blankPassword = "Please fill the password field";
-
   // * Repository link
   static const repoLink = 'https://github.com/Rodrigogzmn6';
+
+  // * Routes
+  static const homeRoute = '/';
+  static const loginRoute = '/login';
+  static const registerRoute = '/register';
+
+  // * Themes
+  static const darkTheme = 'dark';
+  static const lightTheme = 'light';
 
   // * DECORATIONS
   static const formTextFieldDecoration = InputDecoration(

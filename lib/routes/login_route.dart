@@ -19,13 +19,12 @@ class LoginRoute extends StatefulWidget {
 }
 
 class _LoginRouteState extends State<LoginRoute> {
+  String errorMessage = "";
+  bool showSpinner = false;
   Map<String, dynamic> user = {
     "email": "",
     "password": "",
   };
-
-  String errorMessage = "";
-  bool showSpinner = false;
 
   bool checkFields() {
     if (user["email"] == null || user["email"].isEmpty) {
@@ -61,13 +60,12 @@ class _LoginRouteState extends State<LoginRoute> {
           throw (errorMessage);
         }
       } catch (e) {
-        if (e is FirebaseAuthException) {
-          errorMessage = e.message.toString();
-        }
         showDialog(
           context: context,
           builder: (_) => ErrorDialog(
-            description: errorMessage,
+            description: e is FirebaseAuthException
+                ? e.message.toString()
+                : e.toString(),
           ),
           barrierDismissible: true,
         );
@@ -106,10 +104,10 @@ class _LoginRouteState extends State<LoginRoute> {
                 height: 32.0,
               ),
               RoundedButton(
-                backgroundColor: themeProvider.backgroundColor,
+                backgroundColor: Constants.activeTextColor,
                 textColor: themeProvider.textColor,
                 borderColor: themeProvider.itemBackgroundColor,
-                title: 'Log In',
+                title: Constants.login,
                 handleOnPressed: handleOnLogin,
               )
             ],

@@ -75,8 +75,8 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  void signOutUser() {
-    _auth.signOut();
+  signOutUser() async {
+    await _auth.signOut();
     notifyListeners();
   }
 
@@ -97,10 +97,10 @@ class UserProvider with ChangeNotifier {
             .update({"tasks": _tasks});
         notifyListeners();
       } else {
-        print("no docs");
+        throw ("We couldn't find any task list.");
       }
-    } on Exception catch (e) {
-      print(e);
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -121,15 +121,14 @@ class UserProvider with ChangeNotifier {
             .update({"tasks": _tasks});
         notifyListeners();
       } else {
-        print("no docs");
+        throw ("We couldn't find any task list.");
       }
-    } on Exception catch (e) {
-      print(e);
+    } catch (e) {
+      rethrow;
     }
   }
 
   checkTask(value, id) async {
-    print(id);
     try {
       var snapshot = await _firestore
           .collection("users")
@@ -150,10 +149,10 @@ class UserProvider with ChangeNotifier {
             .update({"tasks": _tasks});
         notifyListeners();
       } else {
-        print("no docs");
+        throw ("We couldn't find any task list.");
       }
-    } on Exception catch (e) {
-      print(e);
+    } catch (e) {
+      rethrow;
     }
   }
 

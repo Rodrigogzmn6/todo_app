@@ -9,7 +9,6 @@ import 'package:todo_app/components/rounded_button.dart';
 import 'package:todo_app/providers/user_provider.dart';
 import 'package:todo_app/widgets/main_frame.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import '../providers/theme_provider.dart';
 
 class RegisterRoute extends StatefulWidget {
@@ -22,7 +21,6 @@ class RegisterRoute extends StatefulWidget {
 class _RegisterRouteState extends State<RegisterRoute> {
   String errorMessage = "";
   bool showSpinner = false;
-
   Map<String, dynamic> user = {
     "name": "",
     "lastname": "",
@@ -73,13 +71,12 @@ class _RegisterRouteState extends State<RegisterRoute> {
           throw (errorMessage);
         }
       } catch (e) {
-        if (e is FirebaseAuthException) {
-          errorMessage = e.message.toString();
-        }
         showDialog(
           context: context,
           builder: (_) => ErrorDialog(
-            description: errorMessage,
+            description: e is FirebaseAuthException
+                ? e.message.toString()
+                : e.toString(),
           ),
           barrierDismissible: true,
         );
@@ -136,10 +133,10 @@ class _RegisterRouteState extends State<RegisterRoute> {
                 height: 32.0,
               ),
               RoundedButton(
-                backgroundColor: themeProvider.backgroundColor,
+                backgroundColor: Constants.activeTextColor,
                 textColor: themeProvider.textColor,
                 borderColor: themeProvider.itemBackgroundColor,
-                title: 'Register',
+                title: Constants.register,
                 handleOnPressed: handleOnRegister,
               ),
             ],

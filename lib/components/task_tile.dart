@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/components/error_dialog.dart';
 import 'package:todo_app/providers/theme_provider.dart';
 import 'package:todo_app/providers/user_provider.dart';
 
@@ -18,6 +20,7 @@ class TaskTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final userProvider = Provider.of<UserProvider>(context);
+
     return CheckboxListTile(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -25,7 +28,19 @@ class TaskTile extends StatelessWidget {
       tileColor: themeProvider.itemBackgroundColor,
       value: isChecked,
       onChanged: (value) async {
-        await userProvider.checkTask(value, id);
+        try {
+          await userProvider.checkTask(value, id);
+        } catch (e) {
+          showDialog(
+            context: context,
+            builder: (_) => ErrorDialog(
+              description: e is FirebaseAuthException
+                  ? e.message.toString()
+                  : e.toString(),
+            ),
+            barrierDismissible: true,
+          );
+        }
       },
       title: Text(
         task,
@@ -46,8 +61,16 @@ class TaskTile extends StatelessWidget {
         onTap: () async {
           try {
             await userProvider.removeTask(id);
-          } on Exception catch (e) {
-            print(e);
+          } catch (e) {
+            showDialog(
+              context: context,
+              builder: (_) => ErrorDialog(
+                description: e is FirebaseAuthException
+                    ? e.message.toString()
+                    : e.toString(),
+              ),
+              barrierDismissible: true,
+            );
           }
         },
         child: Icon(
